@@ -1,4 +1,4 @@
-export default function Prompt({ command }) {
+export default function Prompt({ command }: { command?: any }) {
   return (
     <div className="flex items-center gap-1 font-bold text-xl">
       <span className="text-chart-1">Anis_Boulila</span>
