@@ -4,22 +4,53 @@ import { useState, useEffect, useRef } from 'react'
 import executeCommand from '@/app/action'
 import { Input } from './ui/input'
 import TypingLine from './TypingLine'
+import { Progress } from './ui/progress'
+import Prompt from './Prompt'
 
 export default function Terminal() {
   const [history, setHistory] = useState<any[]>([])
   const [input, setInput] = useState('')
   const [mounted, setMounted] = useState(false)
-  
+
   const inputRef = useRef<HTMLInputElement>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setMounted(true)
+
+    const fetchInitialData = async () => {
+      setIsLoading(true)
+      setProgress(10)
+
+      const interval = setInterval(() => {
+        setProgress((prev) => (prev < 90 ? prev + 10 : prev))
+      }, 100)
+
+      try {
+        const output = await executeCommand('help')
+        setProgress(100)
+        clearInterval(interval)
+
+        setTimeout(() => {
+          setHistory([{ type: 'command', value: 'help' }, output])
+          setIsLoading(false)
+        }, 500)
+      } catch (error) {
+        console.error('Failed to fetch initial data:', error)
+        clearInterval(interval)
+        setIsLoading(false)
+      }
+    }
+
+    fetchInitialData()
   }, [])
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [history])
+
+  const [isLoading, setIsLoading] = useState(false)
+  const [progress, setProgress] = useState(0)
 
   const handleEnter = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -29,7 +60,7 @@ export default function Terminal() {
     if (output === 'INTERMINAL_CLEAR_SIGNAL') {
       setHistory([])
     } else {
-      setHistory((prev) => [...prev, `➜ ${input}`, output])
+      setHistory((prev) => [...prev, { type: 'command', value: input }, output])
     }
     setInput('')
   }
@@ -39,19 +70,32 @@ export default function Terminal() {
   }
 
   return (
-    <div 
-      className="min-h-screen w-full max-w-none bg-background p-8 font-mono flex flex-col cursor-text overflow-x-hidden"
+    <div
+      className="min-h-screen w-full max-w-none bg-background p-8 flex flex-col cursor-text overflow-x-hidden font-mono"
       onClick={() => inputRef.current?.focus()}
     >
       <div className="space-y-1">
-        <h1 className='text-main'>type help for more info</h1>
+        {isLoading && (
+          <div className="mb-4 animate-in fade-in duration-300">
+            <div className="text-main mb-2 font-bold uppercase tracking-tighter">
+              Scanning System...
+            </div>
+            <Progress value={progress} />
+          </div>
+        )}
         {history.map((h, i) => (
-          <TypingLine key={i} text={h} />
+          <div key={i}>
+            {typeof h === 'object' && h.type === 'command' ? (
+              <Prompt command={h.value} />
+            ) : (
+              <TypingLine text={h} />
+            )}
+          </div>
         ))}
       </div>
       <div className="flex-1" />
       <form onSubmit={handleEnter} className="flex items-center gap-2 mt-4">
-        <span className="text-main font-bold text-xl shrink-0">➜</span>
+        <Prompt />
         <Input
           ref={inputRef}
           value={input}
