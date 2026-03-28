@@ -90,7 +90,10 @@ export default function Terminal() {
               
             ) : (
               
-              <TypingLine text={h} />
+              <div>
+                <h1 className='text-chart-4 font-bold italic text-l'>Available commands:</h1>
+                <TypingLine text={h} />
+              </div>
             )}
           </div>
         ))}
