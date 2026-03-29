@@ -1,67 +1,32 @@
-# Payload Blank Template
+# Terminal Portfolio
 
-This template comes configured with the bare minimum to get started on anything you need.
+A small project for displaying my work in a terminal-like interface.
 
-## Quick start
+## About
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+I built this because I prefer the terminal and wanted a simple way to organize my projects and experience. It uses a CMS so I can update the content without having to change the code.
 
-## Quick Start - local setup
+### How it works
+- **Content:** The text for each command is stored in a database via Payload CMS.
+- **Interface:** A basic Next.js frontend that takes input and shows the corresponding response.
+- **Tools:** Built with Next.js, Payload, and Tailwind CSS.
 
-To spin up this template locally, follow these steps:
+## Setup
 
-### Clone
+1. **Environment:** Copy `.env.example` to `.env` and add your `MONGODB_URL`.
+2. **Install:** `pnpm install`
+3. **Run:** `pnpm dev`
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+The terminal is at `localhost:3000` and the content dashboard is at `/admin`.
 
-### Development
+## Managing commands
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URL` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+You can add or edit commands in the admin panel. Each command needs a name (what you type), a short description, and the text you want it to display.
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+## Testing
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+- Integration: `pnpm run test:int`
+- E2E: `pnpm run test:e2e`
 
-#### Docker (Optional)
-
-If you prefer to use Docker for local development instead of a local MongoDB instance, the provided docker-compose.yml file can be used.
-
-To do so, follow these steps:
-
-- Modify the `MONGODB_URL` in your `.env` file to `mongodb://127.0.0.1/<dbname>`
-- Modify the `docker-compose.yml` file's `MONGODB_URL` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
-
-## How it works
-
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
-
-### Collections
-
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
-
-- #### Users (Authentication)
-
-  Users are auth-enabled collections that have access to the admin panel.
-
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/main/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
-
-- #### Media
-
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
-
-### Docker
-
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
-
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
-
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
-
-## Questions
-
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+## License
+MIT
