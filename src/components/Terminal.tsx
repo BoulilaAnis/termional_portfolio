@@ -87,30 +87,27 @@ export default function Terminal() {
           <div key={i}>
             {typeof h === 'object' && h.type === 'command' ? (
               <Prompt command={h.value} />
-              
             ) : (
-              
               <div>
-                <h1 className='text-chart-4 font-bold italic text-l'>Available commands:</h1>
+                <h1 className="text-chart-4 font-bold italic text-l">Available commands:</h1>
                 <TypingLine text={h} />
               </div>
             )}
           </div>
         ))}
+        <form onSubmit={handleEnter} className="flex items-center gap-2">
+          <Prompt />
+          <Input
+            ref={inputRef}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            className="!border-none !shadow-none !ring-0 !ring-offset-0 !outline-none bg-transparent p-0 text-xs md:text-xl font-bold h-auto w-full text-chart-5"
+            placeholder=""
+            autoFocus
+            spellCheck={false}
+          />
+        </form>
       </div>
-      <div className="flex-1" />
-      <form onSubmit={handleEnter} className="flex items-center gap-2 mt-4">
-        <Prompt />
-        <Input
-          ref={inputRef}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          className="!border-none !shadow-none !ring-0 !ring-offset-0 !outline-none bg-transparent p-0 text-xs md:text-xl font-bold h-auto w-full text-chart-5"
-          placeholder=""
-          autoFocus
-          spellCheck={false}
-        />
-      </form>
       <div ref={bottomRef} className="h-4" />
     </div>
   )
